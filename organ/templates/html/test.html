@@ -1,0 +1,109 @@
+<!--
+ * @Author: WildboarG
+ * @version: 1.0
+ * @Date: 2023-03-17 14:20:33
+ * @LastEditors: WildboarG
+ * @LastEditTime: 2023-03-17 14:35:48
+ * @Descripttion: 
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</head>
+<body>
+<!--用vue编写一个后台管理系统,左侧为菜单功能界面,右侧为相应功能的响应-->
+<!--菜单包括用户管理,数据统计-->
+<!--用户管理包括用户列表,添加用户,删除用户,查找用户-->
+<!--数据统计包括用户通行记录统计,最后显示8条记录-->
+     <div class="menu">
+         <div class="title">后台管理系统</div>
+         <ul>
+             <li>用户管理</li>
+             <li>数据统计</li>
+         </ul>
+        </div>
+    </div>
+    <div class="display">
+<!--用户管理包括用户列表,添加用户,删除用户,查找用户-->
+<!--数据统计包括用户通行记录统计,最后显示8条记录-->
+        <div class="user_admin">
+            <div class="user_list">
+                <div class="user_list_title">用户列表</div>
+                <div class="user_list_content">
+                    <table>
+                        <tr>
+                            <th>用户ID</th>
+                            <th>用户名</th>
+                            <th>用户密码</th>
+                            <th>用户权限</th>
+                            <th>操作</th>
+                        </tr>
+                        <tr>
+                            <td>1</td>
+                            <td>admin</td>
+                            <td>123456</td>
+                            <td>管理员</td>
+                            <td>
+                                <button>删除</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td>user</td>
+                            <td>123456</td>
+                            <td>普通用户</td>
+                            <td>
+                                <button>删除</button>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <div class="user_add">
+                <div class="user_add_title">添加用户</div>
+                <div class="user_add_content">
+                    <form action="">
+                        <label for="user_id">用户ID</label>
+                        <input type="text" name="user_id" id="user_id">
+                        <label for="user_name">用户名</label>
+                        <input type="text" name="user_name" id="user_name">
+                        <label for="user_password">用户密码</label>
+                        <input type="text" name="user_password" id="user_password">
+                        <label for="user_permission">用户权限</label>
+                        <input type="text" name="user_permission" id="user_permission">
+                        <button>添加</button>
+                    </form>
+                </div>
+            </div>
+            <div class="user_delete">
+                <div class="user_delete_title">删除用户</div>
+                <div class="user_delete_content">
+                    <form action="">
+                        <label for="user_id">用户ID</label>
+                        <input type="text" name="user_id" id="user_id">
+                        <button>删除</button>
+                    </form>
+                </div>
+            </div>
+            <div class="user_search">
+                <div class="user_search_title">查找用户</div>
+                <div class="user_search_content">
+                    <form action="">
+                        <label for="user_id">用户ID</label>
+                        <input type="text" name="user_id" id="user_id">
+                        <button>查找</button>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</body>
+</html>
