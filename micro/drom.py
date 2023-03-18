@@ -2,6 +2,7 @@ import network
 from socket import *
 import ujson
 import display
+import rfidc
 import urequests
 from machine import Pin ,SPI
 from mfrc522 import MFRC522
@@ -18,18 +19,18 @@ class Acsystem:
             self.passwd = password 
             self.server = addr 
             self.port = port
+            self.admin ="http://192.168.0.105:8080/open"
             self.wlan = None
             try:
                 self._connect()
                 display.connect(self.wlan) 
                 time.sleep(2)
-                #display.img("font/test.dat")
-                time.sleep(1)
-                display.show("")
+                display.show("") 
             except:
                 display.connect("Connect Error")
-                time.sleep(1)
-                print("Connect Error")
+                print("[系统连接]:"+"\033[1;31m Connect Error!\033[0m")
+                
+                
         ### 规定消息格式，防止乱码
         ### type消息类型 M为消息 C为控制
         ### esp32clinet 发送消息类型只能为M 
@@ -49,13 +50,13 @@ class Acsystem:
             wlan.active(True)
             
             if not wlan.isconnected():
-                print("connecting to network...")
+                print("[系统连接]:"+"\033[1;36m connecting to network...\033[0m")
                 wlan.connect(self.ssid,self.passwd)
                 while not wlan.isconnected():
                     display.connect("Connecting...")
                     time.sleep_ms(200)
             self.wlan = wlan.ifconfig()[0]
-            print(self.wlan)
+            print("[系统连接]:"+"\033[1;31m {}\033[0m".format(self.wlan))
         
     
         ## handle data
@@ -95,7 +96,8 @@ class Acsystem:
                     print("Port number is out of range")
         
             except:
-                print("logout!")
+                print("[系统状态]:"+"\033[1;32m logout!\033[0m")
+                print("!")
                 self.cli.close()
                 display.img("font/test4.dat")
                 return
@@ -118,42 +120,34 @@ class Acsystem:
                     "num":1
                 }
             datas = ujson.dumps(mes)
-            res = urequests.post(url="http://192.168.0.105:8080/open",data=datas)
+            res = urequests.post(url=self.admin,data=datas)
             con = res.json()
-            print(con["name"])
+            print("[User]:"+"\033[1;44;45m {}\033[0m".format(con["name"]))
             return con["name"],con["status"]
-        ##读取id
+        
         def readid(self):
-            sck = Pin(14, Pin.OUT)  ## SCK/SCL --GPIO18
-            mosi = Pin(13, Pin.OUT) ## MOSI--GPIO23
-            miso = Pin(12, Pin.OUT) ## MISO--GPIO19
-
-            # 创建SPI对象
-            spi = SPI(1,baudrate=100000, polarity=0, phase=0, sck=sck, mosi=mosi, miso=miso)
-            sda = Pin(15, Pin.OUT)  ##片选--GPIO5
-            rfid = MFRC522(spi, sda)
-            print("rfid准备就绪")
-            # 2. 循环读取数据
+            # 1. 初始化
+            rfid = rfidc.read_id()
+            print("[检测准备]:"+"\033[1;32m {}\033[0m".format("OK"))
+              # 2. 循环读取数据
             data = ""
             flag=0.00
             while True:
                 # 3. 复位应答
                 stat, tag_type = rfid.request(rfid.REQIDL)
-                #print("复位应答："+str(stat))
-                #print(flag)
                 if str(stat)  == "2" and flag>0:
                     flag= flag-0.99
                     if flag <= 0:
                         display.show("") ##clear
-                        print("close")  ## 关闭门控
+                        print("[门控状态]:"+"\033[1;35m {}\033[0m".format("关闭"))
                         flag= 0
                 if stat == rfid.OK:
-    
+
                     # 4. 防冲突检测，提取id号
                     stat, raw_uid = rfid.anticoll()
                     if stat == rfid.OK:
                         _id = "0x%02x%02x%02x%02x" % (raw_uid[0], raw_uid[1], raw_uid[2], raw_uid[3])
-                        print("rfid卡片的id:", _id)
+                        print("[认证卡片]:"+"\033[1;30m {}\033[0m".format(_id))
                         ## 如果rfid 本次读取与上一次值相同不执行函数
                         if str(_id) != str(data):  ##
                             #print("open1") ##打开门控
@@ -163,7 +157,7 @@ class Acsystem:
                                 display.audio(7)
                                 display.img("font/test4.dat")
                             if stus == 1:
-                                print("Open the door")
+                                print("[门控状态]:"+"\033[1;36m {}\033[0m".format("开启"))
                                 display.show("welcome "+card)
                             data = str(_id)
                         else:
