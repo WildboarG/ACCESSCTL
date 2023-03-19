@@ -3,7 +3,7 @@
  * @version: 1.0
  * @Date: 2023-03-09 20:11:43
  * @LastEditors: WildboarG
- * @LastEditTime: 2023-03-18 18:05:59
+ * @LastEditTime: 2023-03-19 19:23:59
  * @Descripttion:
  */
 package util
@@ -147,26 +147,26 @@ func Query_card(db_host string, idr string) []interface{} {
 		panic(err)
 	}
 	defer db.Close()
-	// if len(idr) != cardlen {
-	// 	fmt.Println(Mes.ID_ERR)
-	// 	return
-	// }
+	if len(idr) != cardlen {
+		fmt.Println("[查询信息]: " + "\033[36m" + Mes.ID_ERR + "\033[0m")
+		return nil
+	}
 	ret, _ := db.Has([]byte(idr), nil) // 判断是否存在
+	var dat []interface{}
+	var dt interface{}
 	if ret {
-		var dat []interface{}
-		var dt interface{}
 		data, _ := db.Get([]byte(idr), nil)
 		json.Unmarshal(data, &dt) // 将value转换为json格式
 		dat = append(dat, dt)     // 将json格式的value添加到list中
-		// fmt.Println(Mes.QUERY_OK + string(data))
 		fmt.Println("[查询信息]: " + "\033[32m" + string(data) + "\033[0m")
-		return dat
 	} else {
-		// fmt.Println(Mes.QUERY_NO)
 		fmt.Println("[查询信息]: " + "\033[31m" + Mes.QUERY_NO + "\033[0m")
-		a := map[string]string{"err": "查询失败"}
-		return append([]interface{}{}, a)
+		data := []byte("{\"err\":\"查询失败\"}")
+		json.Unmarshal(data, &dt)
+		// return append([]interface{}{},  a)
+		dat = append(dat, dt)
 	}
+	return dat
 }
 
 // 删除卡片
