@@ -3,7 +3,7 @@
  * @version: 1.0
  * @Date: 2023-03-19 17:33:44
  * @LastEditors: WildboarG
- * @LastEditTime: 2023-03-19 19:27:03
+ * @LastEditTime: 2023-03-20 21:25:07
  * @Descripttion:
  */
 
@@ -33,7 +33,7 @@ func Open(c *gin.Context) {
 	var cards []interface{}
 	// 获取卡号 读卡器型号 做一个中间件然后记录进入时间，入口读卡器卡号
 	// 从数据库中比对数据 返回车牌号，若不存在返回"ERR"
-	cards = Query_card(db_host, datas.User)   //参数分别是数据库和idr
+	cards = Query_card(DB_host, datas.User)   //参数分别是数据库和idr
 	card := cards[0].(map[string]interface{}) //card是
 
 	var stus int

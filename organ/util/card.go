@@ -38,8 +38,8 @@ var Mes rms = rms{"卡号错误",
 	"更新成功",
 }
 
-func Add_card(db_host string, card string, name string) (mes string) {
-	db, err := leveldb.OpenFile(db_host, nil)
+func Add_card(DB_host string, card string, name string) (mes string) {
+	db, err := leveldb.OpenFile(DB_host, nil)
 	if err != nil {
 		panic(err)
 	}
@@ -65,8 +65,8 @@ func Add_card(db_host string, card string, name string) (mes string) {
 }
 
 // 添加卡片
-func Add_cards(db_host string, idd int, name string, sex int, age int, idr string, car string) (mes string) {
-	db, err := leveldb.OpenFile(db_host, nil)
+func Add_cards(DB_host string, idd int, name string, sex int, age int, idr string, car string) (mes string) {
+	db, err := leveldb.OpenFile(DB_host, nil)
 	if err != nil {
 		panic(err)
 	}
@@ -102,8 +102,8 @@ func Add_cards(db_host string, idd int, name string, sex int, age int, idr strin
 }
 
 // 更新卡片
-func Update_cards(db_host string, idd int, name string, sex int, age int, idr string, car string) (mes string) {
-	db, err := leveldb.OpenFile(db_host, nil)
+func Update_cards(DB_host string, idd int, name string, sex int, age int, idr string, car string) (mes string) {
+	db, err := leveldb.OpenFile(DB_host, nil)
 	if err != nil {
 		panic(err)
 	}
@@ -141,8 +141,8 @@ func Update_cards(db_host string, idd int, name string, sex int, age int, idr st
 }
 
 // 查询卡片
-func Query_card(db_host string, idr string) []interface{} {
-	db, err := leveldb.OpenFile(db_host, nil)
+func Query_card(DB_host string, idr string) []interface{} {
+	db, err := leveldb.OpenFile(DB_host, nil)
 	if err != nil {
 		panic(err)
 	}
@@ -170,8 +170,8 @@ func Query_card(db_host string, idr string) []interface{} {
 }
 
 // 删除卡片
-func Delete_card(db_host string, card string) (mes string) {
-	db, err := leveldb.OpenFile(db_host, nil)
+func Delete_card(DB_host string, card string) (mes string) {
+	db, err := leveldb.OpenFile(DB_host, nil)
 	if err != nil {
 		panic(err)
 	}
@@ -195,8 +195,8 @@ func Delete_card(db_host string, card string) (mes string) {
 }
 
 // 删除卡片
-func Remove_cards(db_host string, idr string) (mes string) {
-	db, err := leveldb.OpenFile(db_host, nil)
+func Remove_cards(DB_host string, idr string) (mes string) {
+	db, err := leveldb.OpenFile(DB_host, nil)
 	if err != nil {
 		panic(err)
 	}
@@ -221,8 +221,8 @@ func Remove_cards(db_host string, idr string) (mes string) {
 }
 
 // 遍历数据库
-func Query_all(db_host string) []interface{} {
-	db, err := leveldb.OpenFile(db_host, nil)
+func Query_all(DB_host string) []interface{} {
+	db, err := leveldb.OpenFile(DB_host, nil)
 	if err != nil {
 		panic(err)
 	}

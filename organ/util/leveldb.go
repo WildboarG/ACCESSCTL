@@ -3,7 +3,7 @@
  * @version: 1.0
  * @Date: 2023-03-19 17:00:13
  * @LastEditors: WildboarG
- * @LastEditTime: 2023-03-19 17:29:55
+ * @LastEditTime: 2023-03-20 17:30:24
  * @Descripttion:
  */
 
@@ -17,19 +17,19 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-var db_host string = "leveldb_test"
+var DB_host string = "leveldb_test"
 
 // 查询接口
-func Search_card(db_host string, c *gin.Context, card string) {
-	dat := Query_card(db_host, card)
+func Search_card(DB_host string, c *gin.Context, card string) {
+	dat := Query_card(DB_host, card)
 	// json.Marshal(dat)
 	c.JSON(200, config.Res{Code: 200, Total: 1, Users: dat})
 }
 
 // 查询所有
 // 想分组的 在这里修改
-func Search_all(db_host string, c *gin.Context) {
-	dat := Query_all(db_host)
+func Search_all(DB_host string, c *gin.Context) {
+	dat := Query_all(DB_host)
 	//将切片转换为json
 	// fmt.Println(dat)
 	b, err := json.Marshal(dat)
@@ -64,10 +64,10 @@ func Search_choose(c *gin.Context) {
 	}
 
 	if querys.Idr == "" { //查询所有
-		Search_all(db_host, c)
+		Search_all(DB_host, c)
 		fmt.Println("[查询所有]: " + "\033[32m" + "成功" + "\033[0m")
 	} else {
-		Search_card(db_host,
+		Search_card(DB_host,
 			c,
 			string(querys.Idr),
 		)
@@ -85,7 +85,7 @@ func Useradd(c *gin.Context) {
 	}
 	// fmt.Println(data)
 	fmt.Println("[添加用户]: "+"\033[32m", "成功", "\033[0m")
-	Add_cards(db_host,
+	Add_cards(DB_host,
 		data.Id,
 		data.Name,
 		data.Sex,
@@ -107,7 +107,7 @@ func Userremove(c *gin.Context) {
 	//终端彩色输出
 	fmt.Println("[删除用户]: "+"\033[32m", "成功", "\033[0m")
 	//fmt.Println(data)
-	Remove_cards(db_host, data.Idr)
+	Remove_cards(DB_host, data.Idr)
 	c.JSON(200, config.Response{Code: 200, Res: "0", Msg: "ok"})
 }
 
@@ -121,7 +121,7 @@ func Userupdate(c *gin.Context) {
 	}
 	// fmt.Println(data)
 	fmt.Println("[修改用户]: "+"\033[32m", "成功", "\033[0m")
-	Update_cards(db_host,
+	Update_cards(DB_host,
 		data.Id,
 		data.Name,
 		data.Sex,
