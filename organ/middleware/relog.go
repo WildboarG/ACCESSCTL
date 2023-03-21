@@ -3,7 +3,7 @@
  * @version: 1.0
  * @Date: 2023-03-20 17:21:28
  * @LastEditors: WildboarG
- * @LastEditTime: 2023-03-20 20:24:33
+ * @LastEditTime: 2023-03-21 20:23:56
  * @Descripttion:
  */
 package middleware
@@ -24,7 +24,7 @@ func Record(c *gin.Context) {
 	datas := data.(cf.Root)
 	card, _ := c.Get("user_card")
 	cards := card.(map[string]interface{})
-	//fmt.Printf("%s : %s : %s :%d", time.DateTime, datas.User, cards["name"], datas.Num)
+	// fmt.Printf("%s : %s : %s :%d", time.DateTime, datas.User, cards["name"], datas.Num)
 	//构建json数据
 	Data := map[string]interface{}{
 		"date": time.Now().Format("2006-01-02 15:04:05"),
@@ -39,7 +39,7 @@ func Record(c *gin.Context) {
 	}
 	//以追加的形式写入到json文件中
 	//获取当前文件的路径
-	filepath := "./data/record.json"
+	filepath := "./data/record_" + time.Now().Format("2006-01-02") + ".json"
 	//打开文件
 	file, err := os.OpenFile(filepath, os.O_RDWR|os.O_CREATE|os.O_APPEND, 0644)
 	if err != nil {
