@@ -19,8 +19,8 @@ import (
 
 func main() {
 
-	//router := gin.Default()
-	router := gin.New()
+	router := gin.Default()
+	//router := gin.New()
 	// router.Use(gin.LoggerWithFormatter(func(param gin.LogFormatterParams) string {
 	//     return fmt.Sprintf("%s - [%s] \"%s %s %s %d %s \"%s\" %s\"\n",
 	//         param.ClientIP,
@@ -34,7 +34,7 @@ func main() {
 	//         param.ErrorMessage,
 	//     )
 	// }))
-	router.Use(gin.Recovery())
+	//router.Use(gin.Recovery())
 	gin.DebugPrintRouteFunc = func(httpMethod, absolutePath, handlerName string, nuHandlers int) {
 		log.Printf("endpoint %v %v %v %v\n", httpMethod, absolutePath, handlerName, nuHandlers)
 	}
@@ -54,7 +54,7 @@ func main() {
 		user.GET("/listpage", util.Search_choose)
 	}
 
-	router.POST("/open", util.Open, middleware.Record)
+	router.POST("/open", util.Open,middleware.Record) //开门接口
 
 	router.Run(":8080")
 }
