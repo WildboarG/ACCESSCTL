@@ -3,7 +3,7 @@
  * @version: 1.0
  * @Date: 2023-03-19 17:33:44
  * @LastEditors: WildboarG
- * @LastEditTime: 2023-03-20 21:25:07
+ * @LastEditTime: 2023-03-21 20:22:09
  * @Descripttion:
  */
 
@@ -36,6 +36,9 @@ func Open(c *gin.Context) {
 	cards = Query_card(DB_host, datas.User)   //参数分别是数据库和idr
 	card := cards[0].(map[string]interface{}) //card是
 
+	c.Set("data", datas)
+	c.Set("user_card", card)
+
 	var stus int
 	var cars string
 
@@ -48,4 +51,5 @@ func Open(c *gin.Context) {
 	}
 
 	c.JSON(200, gin.H{"name": cars, "status": stus})
+	c.Next()
 }
