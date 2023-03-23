@@ -147,7 +147,7 @@ class Acsystem:
                     stat, raw_uid = rfid.anticoll()
                     if stat == rfid.OK:
                         _id = "0x%02x%02x%02x%02x" % (raw_uid[0], raw_uid[1], raw_uid[2], raw_uid[3])
-                        print("[认证卡片]:"+"\033[1;30m {}\033[0m".format(_id))
+                        print("[认证卡片]:"+"\033[1;37m {}\033[0m".format(_id))
                         ## 如果rfid 本次读取与上一次值相同不执行函数
                         if str(_id) != str(data):  ##
                             #print("open1") ##打开门控
@@ -201,8 +201,8 @@ if __name__ == "__main__":
     #ACS = Acsystem(ssid,password,addr,port)
     ACS = Acsystem("TP-LINK_9683","13283985795",addr,port)
     #ACS.tcp_client()
-    #_thread.start_new_thread(ACS.client_cv,())
-    #_thread.start_new_thread(ACS.client_send())
-    #time.sleep(10)
+    # _thread.start_new_thread(ACS.client_cv())
+    # _thread.start_new_thread(ACS.client_send())
+    ##time.sleep(10)
     _thread.start_new_thread(ACS.readid())
     
