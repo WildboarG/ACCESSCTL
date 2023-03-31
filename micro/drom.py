@@ -158,7 +158,7 @@ class Acsystem:
                                 display.img("font/test4.dat")
                             if stus == 1:
                                 print("[门控状态]:"+"\033[1;36m {}\033[0m".format("开启"))
-                                display.show("welcome "+card)
+                                display.show(" "+card)
                             data = str(_id)
                         else:
                             flag=flag+1

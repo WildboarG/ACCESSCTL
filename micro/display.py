@@ -24,10 +24,10 @@ tft.font_load("font/GB2312-12.fon")
 def audio(num):  ##GPIO27 low sound
     sound = Pin(27,Pin.OUT)
     for i in range(num):
-        sound.value =  0
+        sound.value(0)
         time.sleep_ms(300)
-        sound.value = 1
-        time.sleep(200)
+        sound.value(1)
+        time.sleep_ms(200)
     sound.value(1)
     
 ## 颜色顺序 b r g
@@ -49,7 +49,12 @@ def clean():
     tft.show()
 
 ## 主屏幕显示
-def show(show_data):
+def show(*args):
+    if len(args) == 1:
+        datas = args[0]
+    if len(args) == 2:
+        datas = args[0]
+        count = args[1]
     rtc = RTC()
     wek = ["Mon","Tue","Wed","Thu","Fri","Sat","Sun"]
     if rtc.datetime()[0] != 2023:
@@ -72,35 +77,28 @@ def show(show_data):
     tft.vline(129,38,60,tft.rgb(255,255,255))
     tft.hline(0,98,130,tft.rgb(255,255,255)) 
     ## 38-98之间的框内作为输入显示区域  以5 40作为起点 120个像素
-    lend,word = dt_len(show_data)
-    if lend<=20:
-        tft.text("{}".format(show_data),5,40,tft.rgb(0,0,255))
-    if 20<lend<=40: 
-        tft.text("{}".format(show_data[:20-word]),5,40,tft.rgb(0,0,255))
-        tft.text("{}".format(show_data[21-word:]),5,53,tft.rgb(0,0,255))
-    #tft.text("{}".format(show_data),4,65,tft.rgb(0,0,255))
-    if 40<lend<=60:
-        tft.text("{}".format(show_data[:20]),5,40,tft.rgb(0,0,255))
-        tft.text("{}".format(show_data[21:40]),5,54,tft.rgb(0,0,255))
-        tft.text("{}".format(show_data[41:]),5,68,tft.rgb(0,0,255))
-    if lend>60:
-        tft.text("{}".format(show_data[:20]),5,40,tft.rgb(0,0,255))
-        tft.text("{}".format(show_data[21:40]),5,55,tft.rgb(0,0,255))
-        tft.text("{}".format(show_data[41:60]),5,70,tft.rgb(0,0,255))
-        tft.text("{}".format(show_data[61:]),5,85,tft.rgb(0,0,255))
+    lend,word = dt_len(datas)
+    if len(args) == 1:
+        tft.text("{}".format(datas),5,40,tft.rgb(0,0,255))
+    if len(args) == 2:
+        if word == 0:
+            tft.text("{}".format(datas),5,40,tft.rgb(0,0,255))
+        else:
+            tft.text("{}".format(datas),5,40,tft.rgb(0,0,255))
+            tft.text("{}".format(count),5,55,tft.rgb(0,0,255))
         
     tft.text("power by:",4,101,tft.rgb(233,233,233))
     tft.text("WildboarG",50,114,tft.rgb(233,233,233))
     tft.show()
 
 ## 连接显示
-def connect(show_data):
+def connect(datas):
     tft.fill(tft.rgb(0,0,0)) ##清屏：刷新一次与背景相同
     tft.text("系统初始化:",20,5,tft.rgb(0,0,255))
     tft.hline(0,18,130,tft.rgb(0,255,255))
     tft.text("networkconfig:",6,27,tft.rgb(0,0,255))
-    tft.text("%s"%(show_data),10,47,tft.rgb(0,0,255))
-    #tft.text("{}".format(show_data),4,65,tft.rgb(0,0,255))
+    tft.text("%s"%(datas),10,47,tft.rgb(0,0,255))
+    #tft.text("{}".format(datas),4,65,tft.rgb(0,0,255))
     tft.text("power by:",4,101,tft.rgb(233,233,233))
     tft.text("WildboarG",50,114,tft.rgb(233,233,233))
     tft.show()
