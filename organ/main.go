@@ -3,7 +3,7 @@
  * @version: 1.0
  * @Date: 2023-03-09 17:41:59
  * @LastEditors: WildboarG
- * @LastEditTime: 2023-03-20 19:49:42
+ * @LastEditTime: 2023-03-31 18:06:21
  * @Descripttion:
  */
 package main
@@ -52,9 +52,10 @@ func main() {
 		user.GET("/edit", util.Userupdate)
 		user.GET("/remove", util.Userremove)
 		user.GET("/listpage", util.Search_choose)
+		user.GET("/logsearch", util.Getlog)
 	}
 
-	router.POST("/open", util.Open,middleware.Record) //开门接口
+	router.POST("/open", util.Open, middleware.Record) //开门接口
 
 	router.Run(":8080")
 }

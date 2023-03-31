@@ -3,7 +3,7 @@
  * @version: 1.0
  * @Date: 2023-03-19 17:33:44
  * @LastEditors: WildboarG
- * @LastEditTime: 2023-03-21 20:22:09
+ * @LastEditTime: 2023-03-31 18:50:18
  * @Descripttion:
  */
 
@@ -19,6 +19,10 @@ import (
 
 func Open(c *gin.Context) {
 	var datas cf.Root
+	var cards []interface{}
+	var stus int
+	var cars string
+
 	body, err := c.GetRawData()
 	// fmt.Println(body)
 	if err != nil {
@@ -30,7 +34,6 @@ func Open(c *gin.Context) {
 	}
 	// fmt.Println(datas)
 
-	var cards []interface{}
 	// 获取卡号 读卡器型号 做一个中间件然后记录进入时间，入口读卡器卡号
 	// 从数据库中比对数据 返回车牌号，若不存在返回"ERR"
 	cards = Query_card(DB_host, datas.User)   //参数分别是数据库和idr
@@ -38,9 +41,6 @@ func Open(c *gin.Context) {
 
 	c.Set("data", datas)
 	c.Set("user_card", card)
-
-	var stus int
-	var cars string
 
 	if card["idr"] != nil {
 		stus = 1
