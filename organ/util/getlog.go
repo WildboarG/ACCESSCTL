@@ -3,7 +3,7 @@
  * @version: 1.0
  * @Date: 2023-03-31 16:29:00
  * @LastEditors: WildboarG
- * @LastEditTime: 2023-03-31 18:52:12
+ * @LastEditTime: 2023-04-01 11:19:56
  * @Descripttion:
  */
 
@@ -15,14 +15,40 @@ import (
 	"drom/config"
 	"fmt"
 	"os"
+	"regexp"
 	"strings"
+	"time"
 
 	"github.com/gin-gonic/gin"
 )
 
 func Getlog(c *gin.Context) {
+	var datalog config.DataLog
+	err := c.ShouldBindQuery(&datalog)
+	if err != nil {
+		fmt.Println("[查看日志]: " + "\033[31m" + err.Error() + "\033[0m")
+	}
+	// fmt.Println(datalog.ID)
+	today := time.Date(2023, 3, 21, 0, 0, 0, 0, time.Local)
+	re_today := today.Format("2006-01-02")
+	if datalog.ID == "" {
+		datalog.ID = re_today
+	}
+	//如果输入的格式不符合正则\d\d\d\d-\d\d-\d\d 则返回错误
+	if !regexp.MustCompile(`\d\d\d\d-\d\d-\d\d`).MatchString(datalog.ID) {
+		c.JSON(200, config.Res{Code: 400, Total: 0, Users: "日期格式错误"})
+		return
+	}
 
-	fp, err := os.Open("data/record_2023-03-21.json")
+	logfile := "data/record_" + datalog.ID + ".json"
+	// 检查文件是否存在,不存在返回错误
+	if _, err := os.Stat(logfile); err != nil {
+		if os.IsNotExist(err) {
+			c.JSON(200, config.Res{Code: 400, Total: 0, Users: "没有当天的通行记录"})
+			return
+		}
+	}
+	fp, err := os.Open(logfile)
 	if err != nil {
 		fmt.Println(err) //打开文件错误
 		return
